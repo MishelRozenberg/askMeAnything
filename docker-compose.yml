@@ -1,0 +1,19 @@
+version: '3'
+services:
+    db:
+        image: "postgres"
+        container_name: db
+        ports:
+            - 5432:5432
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_DB=askai
+
+    app:
+        build: .
+        environment:
+            - DATABASE_URL=postgresql://postgres:postgres@db/askai
+            - OPENAI_API_KEY=sk-proj-oqNck2shUbQ8ZOV7UEOET3BlbkFJoe76PQyaOzj1rI88uK0a
+        ports:
+            - 5000:5000
