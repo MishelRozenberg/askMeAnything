@@ -12,7 +12,6 @@ app = Flask(__name__)
 DATABASE_URL = os.environ["DATABASE_URL"]
 
 
-
 # Create an engine and session
 engine = create_engine(DATABASE_URL)
 Session = sessionmaker(bind=engine)
