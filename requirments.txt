@@ -1,0 +1,5 @@
+flask
+sqlalchemy
+openai
+alembic
+psycopg2
