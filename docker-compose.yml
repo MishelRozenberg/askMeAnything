@@ -14,6 +14,6 @@ services:
         build: .
         environment:
             - DATABASE_URL=postgresql://postgres:postgres@db/askai
-            - OPENAI_API_KEY=sk-proj-oqNck2shUbQ8ZOV7UEOET3BlbkFJoe76PQyaOzj1rI88uK0a
+            - OPENAI_API_KEY=your-openai-api-key-here # <-- User should replace this value
         ports:
             - 5000:5000

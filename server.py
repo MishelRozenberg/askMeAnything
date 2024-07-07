@@ -1,33 +1,13 @@
+import asyncio
 import os
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-import asyncio
 from flask import Flask, request, jsonify
+
+import db
 from ai import ask_openai, OpenAIError
-from model.question import Question
+from db import save_question
 
 app = Flask(__name__)
-
-DATABASE_URL = os.environ["DATABASE_URL"]
-
-
-# Create an engine and session
-engine = create_engine(DATABASE_URL)
-Session = sessionmaker(bind=engine)
-session = Session()
-
-
-def save_question(question: str, answer: str) -> None:
-    """
-    Save the question to the database
-    :param question:
-    :param answer:
-    :return:
-    """
-    question = Question(question_data=question, answer_data=answer)
-    session.add(question)
-    session.commit()
 
 
 @app.route('/ask', methods=['POST'])
@@ -44,7 +24,7 @@ def ask():
         question = data.get('question')
         try:
             answer = asyncio.run(ask_openai(question))
-            save_question(question, answer)
+            save_question(db.create_session(os.environ["DATABASE_URL"]), question, answer)
             response = {
                 "status": "success",
                 "data": {
@@ -61,11 +41,6 @@ def ask():
             }
 
     return jsonify(response)
-
-
-@app.route("/fetch", methods=["GET"])
-def fetch():
-    pass
 
 
 if __name__ == '__main__':
